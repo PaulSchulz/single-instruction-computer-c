@@ -1,0 +1,8 @@
+TOPTARGETS := all clean
+SUBDIRS    := src doc
+.PHONY: $(TOPTARGETS) $(SUBDIRS)
+
+$(TOPTARGETS): $(SUBDIRS)
+
+$(SUBDIRS):
+	make -C $@ $(MAKECMDGOALS)
