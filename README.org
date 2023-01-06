@@ -16,6 +16,12 @@ based on the [[https://arxiv.org/pdf/1106.2593][bleq example]][2], written in C.
   using address of -1 (0xFFFF). 
 - Indirect Addressing using [[https://techtinkering.com/2009/05/15/improving-the-standard-subleq-oisc-architecture/][negative addresses]][7].
 
+** TODO Investigations
+- Look into changing implementation to use Position Independent Execution code.
+  Is this possible? It may require changes to the architecture.
+- Look into using the "Subtract and Branch if not equal to zero" (SBNZ)
+  instruction as it may prove to be easier to understand and/or implement.
+
 ** TODO Additional Software
 *** Assembler / Dissassember [3,4]: Programming using Macros
 *** (Reduced) C Compiler - Higher Subleq[5], DawnOS Compiler[6]

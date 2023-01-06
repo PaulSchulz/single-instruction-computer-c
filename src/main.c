@@ -7,6 +7,9 @@
 #include <stdint.h>  // Required for 16bit arithmetic
 #include <stdbool.h> // Required for boolean operators
 
+#define GETTEXT_PACKAGE "gtk4"  // Used for Internationalization
+#include <glib.h>    // Used for Command line parsing, among other things.
+
 /// \brief Hello World Program
 //
 /// This program is based on the example (pp) from the paper "A Simple
@@ -148,17 +151,44 @@ int process (int* data, int pc){
  */
 void usage (void) {
     printf("sic [arguments]\n");
+    printf("  -q --quiet     Quiet mode\n");
     printf("  --hello-world  Run inbuilt 'hello, world' program.\n");
 }
+
+static gboolean quiet = FALSE;
+
+static GOptionEntry entries[] =
+{
+    { "quiet", 'q', 0, G_OPTION_ARG_NONE, &quiet, "Be quite", NULL},
+    { NULL }
+};
 
 /// Main Function
 /**
  *  WIP Main processing loop. Run the program on the machine until it halts.
  */
 int main (int argc, char** argv) {
-    printf("Single Instruction Computer\n");
-    printf("---------------------------\n");
+    // Process arguments
+    GError *error = NULL;
+    GOptionContext *context;
 
+    context = g_option_context_new ("- single instruction computer files");
+    g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+    // g_option_context_add_group (context, gtk_get_option_group (TRUE));
+    if (!g_option_context_parse (context, &argc, &argv, &error))
+    {
+        g_print ("option parsing failed: %s\n", error->message);
+        exit (1);
+    }
+
+    g_option_context_free(context);
+
+    if (!quiet){
+        printf("Single Instruction Computer\n");
+        printf("---------------------------\n");
+    }
+
+    //////////////////////////////////////////////////////////////////////////
     // Initialise Program Counter
     int pc = 0;
 
@@ -166,5 +196,5 @@ int main (int argc, char** argv) {
         //    monitor(data, pc);
         pc = process(data, pc);
     }
-    return 0;
+return 0;
 }
